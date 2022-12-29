@@ -343,7 +343,6 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
       }
 
       const { xTouchPoint, yTouchPoint } = this.getTouchedPoint({
-        angle,
         xPoint,
         yPoint,
         xLinear,
@@ -463,7 +462,6 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
   }
 
   private getTouchedPoint(data: {
-    angle: number;
     xPoint: Point;
     yPoint: Point;
     object: EnclosingObject;
@@ -472,12 +470,12 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
     active: fabric.Object;
     rect: ReturnType<typeof getFabricEnclosingRect>;
   }) {
-    const { angle, xPoint, yPoint, object, xLinear, yLinear, active, rect } = data;
+    const { xPoint, yPoint, object, xLinear, yLinear, active, rect } = data;
 
     let xTouchPoint: Point | undefined;
     let yTouchPoint: Point | undefined;
 
-    if (angle !== 90 && angle !== 270) {
+    if (Number.isFinite(xLinear.k)) {
       if (withinAdsorptionRange(xPoint.x, object.right, this.scalingAdsorption)) {
         xTouchPoint = { x: object.right, y: xLinear.func(object.right) };
 
@@ -489,7 +487,7 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
       }
     }
 
-    if (angle !== 0 && angle !== 180) {
+    if (xLinear.k !== 0) {
       if (withinAdsorptionRange(yPoint.y, object.bottom, this.scalingAdsorption)) {
         yTouchPoint = { x: yLinear.reverseFunc(object.bottom), y: object.bottom };
 
