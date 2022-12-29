@@ -29,14 +29,12 @@ async function cloneObject<T extends fabric.Object>(object: T) {
 }
 
 (async () => {
-  const image1 = await fabricImageFromURL(
-    'https://clkj-online.oss-accelerate.aliyuncs.com/images/material/short/17-7ce0da05-2667-4ab7-8cc5-f7f5361dd187.jpg',
-  );
+  const image1 = await fabricImageFromURL('/pic.png');
   image1.set({
     left: 50,
     top: 50,
-    scaleX: 0.09,
-    scaleY: 0.09,
+    scaleX: 0.15,
+    scaleY: 0.15,
     angle: 0,
   });
 
@@ -44,8 +42,8 @@ async function cloneObject<T extends fabric.Object>(object: T) {
   image2.set({
     left: 50,
     top: 225,
-    scaleX: 0.09,
-    scaleY: 0.09,
+    scaleX: 0.15,
+    scaleY: 0.15,
     angle: 180,
   });
 
@@ -53,8 +51,8 @@ async function cloneObject<T extends fabric.Object>(object: T) {
   image3.set({
     left: 50,
     top: 400,
-    scaleX: 0.09,
-    scaleY: 0.09,
+    scaleX: 0.15,
+    scaleY: 0.15,
     angle: 270,
   });
 
@@ -62,8 +60,8 @@ async function cloneObject<T extends fabric.Object>(object: T) {
   image4.set({
     left: 215.63246763185288,
     top: 292,
-    scaleX: 0.09,
-    scaleY: 0.09,
+    scaleX: 0.15,
+    scaleY: 0.15,
     angle: -45,
   });
 
@@ -71,8 +69,8 @@ async function cloneObject<T extends fabric.Object>(object: T) {
   image5.set({
     left: 400,
     top: 50,
-    scaleX: 0.09,
-    scaleY: 0.09,
+    scaleX: 0.15,
+    scaleY: 0.15,
     angle: 90,
   });
 
