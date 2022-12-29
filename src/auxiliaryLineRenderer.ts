@@ -10,18 +10,18 @@ export class AuxiliaryLineRenderer {
   private container: HTMLDivElement | null = null;
   private lineMap = new Map<AuxiliaryLineType, AuxiliaryLine>();
 
-  private lineStyle = `${DEFAULT_WIDTH}px ${DEFAULT_STYLE} ${DEFAULT_COLOR}`;
+  private lineWidth = DEFAULT_WIDTH;
+  private lineStyle = DEFAULT_STYLE;
+  private lineColor = DEFAULT_COLOR;
 
   constructor(options?: AuxiliaryLineRendererOptions) {
-    const lineWidth = typeof options?.lineWidth === 'number' ? options.lineWidth : DEFAULT_WIDTH;
-    const lineStyle = options?.lineStyle || DEFAULT_STYLE;
-    const lineColor = options?.lineColor || DEFAULT_COLOR;
-
-    this.lineStyle = `${lineWidth}px ${lineStyle} ${lineColor}`;
+    this.lineWidth = typeof options?.lineWidth === 'number' ? options.lineWidth : DEFAULT_WIDTH;
+    this.lineStyle = options?.lineStyle || DEFAULT_STYLE;
+    this.lineColor = options?.lineColor || DEFAULT_COLOR;
   }
 
   /** 挂载 */
-  public mount(canvas: fabric.Canvas) {
+  public mount = (canvas: fabric.Canvas) => {
     this.unmount();
 
     const canvasEl = canvas.getElement();
@@ -39,14 +39,14 @@ export class AuxiliaryLineRenderer {
     });
 
     canvasEl.after(this.container);
-  }
+  };
 
   /** 卸载 */
-  public unmount() {
+  public unmount = () => {
     this.container?.remove();
     this.container = null;
     this.lineMap.clear();
-  }
+  };
 
   /** 添加辅助线 */
   private setAuxiliaryLine(key: AuxiliaryLineType) {
@@ -60,7 +60,7 @@ export class AuxiliaryLineRenderer {
     element.setAttribute('data-auxiliary-line-key', key);
     this.container?.appendChild(element);
 
-    const lineStyle = this.lineStyle;
+    const lineStyle = `${this.lineWidth}px ${this.lineStyle} ${this.lineColor}`;
 
     auxiliaryLine = {
       element,
@@ -92,7 +92,7 @@ export class AuxiliaryLineRenderer {
     return auxiliaryLine;
   }
 
-  public addEffectToAuxiliaryLine(key: AuxiliaryLineType, active: fabric.Object, ...effect: EnclosingObject[]) {
+  public addEffectToAuxiliaryLine = (key: AuxiliaryLineType, active: fabric.Object, ...effect: EnclosingObject[]) => {
     const auxiliaryLine = this.setAuxiliaryLine(key);
 
     const effects = auxiliaryLine.effects || [];
@@ -100,17 +100,17 @@ export class AuxiliaryLineRenderer {
 
     auxiliaryLine.active = active;
     auxiliaryLine.effects = effects;
-  }
+  };
 
   /** 清空辅助线 */
-  public clearAuxiliaryLines() {
+  public clearAuxiliaryLines = () => {
     this.container?.style.setProperty('visibility', 'hidden');
 
     this.lineMap.forEach(auxiliaryLine => {
       delete auxiliaryLine.active;
       auxiliaryLine.effects = [];
     });
-  }
+  };
 
   private renderAuxiliaryLine(key: AuxiliaryLineType, target: fabric.Object, objects: EnclosingObject[]) {
     let left = 0,
@@ -125,7 +125,7 @@ export class AuxiliaryLineRenderer {
 
     switch (key) {
       case 'vertical-left':
-        left = objects[0].left - 1;
+        left = objects[0].left - this.lineWidth;
         top = rect.top;
         height = rect.height;
         break;
@@ -136,7 +136,7 @@ export class AuxiliaryLineRenderer {
         break;
       case 'horizon-top':
         left = rect.left;
-        top = objects[0].top - 1;
+        top = objects[0].top - this.lineWidth;
         width = rect.width;
         break;
       case 'horizon-bottom':
@@ -150,8 +150,8 @@ export class AuxiliaryLineRenderer {
   }
 
   /** 渲染辅助线 */
-  public renderAuxiliarylines() {
-    this.lineMap.forEach(line => line.render?.(this.renderAuxiliaryLine));
+  public renderAuxiliarylines = () => {
+    this.lineMap.forEach(line => line.render?.(this.renderAuxiliaryLine.bind(this)));
     this.container?.style.setProperty('visibility', 'visible');
-  }
+  };
 }

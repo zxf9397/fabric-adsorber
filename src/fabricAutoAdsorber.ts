@@ -77,7 +77,7 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
     this.lineRenderer = options?.auxiliaryLineRenderer ? options.auxiliaryLineRenderer : null;
   }
 
-  public mount(canvas: T) {
+  public mount = (canvas: T) => {
     this.unmount();
 
     this.lineRenderer?.mount(canvas);
@@ -88,9 +88,9 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
     this.canvas.on('object:moving', this.handleWork);
     this.canvas.on('object:scaling', this.handleWork);
     this.canvas.on('mouse:up', this.handleWorkAfter);
-  }
+  };
 
-  public unmount() {
+  public unmount = () => {
     if (this.canvas) {
       this.canvas.off('mouse:down', this.handleWorkBefore);
       this.canvas.off('object:moving', this.handleWork);
@@ -99,7 +99,7 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
     }
 
     this.lineRenderer?.unmount();
-  }
+  };
 
   private handleDrag(e: fabric.IEvent) {
     this.lineRenderer?.clearAuxiliaryLines();
@@ -594,7 +594,7 @@ export class FabricAutoAdsorber<T extends fabric.Canvas> {
    * clean event after mouse:up
    * @param {fabric.IEvent} e
    */
-  public handleWorkAfter = (e?: fabric.IEvent) => {
+  public handleWorkAfter = () => {
     if (this.working) {
       this.working = false;
       this.lineRenderer?.clearAuxiliaryLines();
